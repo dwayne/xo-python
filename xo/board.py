@@ -11,6 +11,15 @@ def is_empty(piece):
     return not is_player(piece)
 
 
+def other_player(player):
+    if player == 'x':
+        return 'o'
+    elif player == 'o':
+        return 'x'
+    else:
+        raise ValueError('expected a player: {}'.format(player))
+
+
 class Board:
     @classmethod
     def fromstring(cls, layout=''):
