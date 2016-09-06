@@ -3,12 +3,12 @@ ncols = 3
 ncells = nrows * ncols
 
 
-def is_player(piece):
+def isplayer(piece):
     return piece == 'x' or piece == 'o'
 
 
-def is_empty(piece):
-    return not is_player(piece)
+def isempty(piece):
+    return not isplayer(piece)
 
 
 def other_player(player):
@@ -29,7 +29,7 @@ class Board:
             if i >= ncells:
                 break
 
-            if is_player(piece):
+            if isplayer(piece):
                 cells[i] = piece
 
         return cls(cells)
@@ -59,7 +59,7 @@ class Board:
         ])
 
     def __str__(self):
-        return ''.join(piece if is_player(piece) else '.' for piece in self.cells)
+        return ''.join(piece if isplayer(piece) else '.' for piece in self.cells)
 
     @staticmethod
     def contains(r, c):
@@ -67,7 +67,7 @@ class Board:
 
     @staticmethod
     def _normalize_to_piece(piece):
-        if is_player(piece):
+        if isplayer(piece):
             return piece
         return E
 

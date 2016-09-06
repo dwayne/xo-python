@@ -1,4 +1,4 @@
-from .board import is_player, other_player
+from .board import isplayer, other_player
 
 
 STATUS_INVALID     = 'invalid'
@@ -14,7 +14,7 @@ REASON_SQUASHED             = 'squashed'
 
 
 def outcome(board, player):
-    if not is_player(player):
+    if not isplayer(player):
         raise ValueError('expected a player: {}'.format(player))
 
     piece_counts = count_pieces(board)
@@ -108,7 +108,7 @@ def _find_winners(board):
 
 
 def _is_winning(x, y, z):
-    return is_player(x) and x == y and y == z
+    return isplayer(x) and x == y and y == z
 
 
 def _has_two_winners(winners):
