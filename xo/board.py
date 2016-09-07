@@ -69,7 +69,7 @@ class Board:
     def _normalize_to_piece(piece):
         if isplayer(piece):
             return piece
-        return E
+        return ' '
 
     @classmethod
     def _idx(cls, r, c):
