@@ -1,6 +1,7 @@
 from . import arbiter
 from .error import IllegalStateError
-from .board import isempty, isplayer, other_player, Board
+from .board import Board
+from .token import isempty, istoken, other_token
 
 
 STATE_INIT     = 'init'
@@ -28,18 +29,18 @@ class Game:
 
     def next_turn(self):
         if self.turn:
-            return other_player(self.turn)
+            return other_token(self.turn)
         else:
             return None
 
-    def start(self, player):
+    def start(self, token):
         if self.state == STATE_INIT:
-            if not isplayer(player):
-                raise ValueError('expected a player: {}'.format(player))
+            if not istoken(token):
+                raise ValueError('must be a token: {}'.format(token))
 
             self.state = STATE_PLAYING
             self.board = Board.fromstring()
-            self.turn = player
+            self.turn = token
         else:
             raise IllegalStateError(self.state)
 
@@ -48,12 +49,12 @@ class Game:
             if Board.contains(r, c):
                 if isempty(self.board[r, c]):
                     self.board[r, c] = self.turn
-                    last_move = { 'r': r, 'c': c, 'player': self.turn }
+                    last_move = { 'r': r, 'c': c, 'token': self.turn }
 
                     outcome = arbiter.outcome(self.board, self.turn)
 
                     if outcome['status'] == arbiter.STATUS_IN_PROGRESS:
-                        self.turn = other_player(self.turn)
+                        self.turn = other_token(self.turn)
 
                         return {
                             'name': EVENT_NAME_NEXT_TURN,
@@ -64,6 +65,7 @@ class Game:
                         self.statistics['total'] += 1
 
                         if outcome['reason'] == arbiter.REASON_WINNER:
+                            self._restart_turn = self.turn
                             self.statistics['{}wins'.format(self.turn)] += 1
 
                             return {
@@ -73,7 +75,7 @@ class Game:
                                 'details': outcome['details']
                             }
                         elif outcome['reason'] == arbiter.REASON_SQUASHED:
-                            self.turn = other_player(self.turn)
+                            self._restart_turn = other_token(self.turn)
                             self.statistics['squashed'] += 1
 
                             return {
@@ -98,5 +100,6 @@ class Game:
         if self.state == STATE_GAMEOVER:
             self.state = STATE_PLAYING
             self.board = Board.fromstring()
+            self.turn = self._restart_turn
         else:
             raise IllegalStateError(self.state)

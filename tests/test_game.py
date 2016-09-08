@@ -98,7 +98,7 @@ class GamePlayTestCase(unittest.TestCase):
         self.assertEqual(event['name'], game.EVENT_NAME_NEXT_TURN)
         self.assertEqual(
             event['last_move'],
-            { 'r': 1, 'c': 1, 'player': 'x' }
+            { 'r': 1, 'c': 1, 'token': 'x' }
         )
 
         self.assertEqual(self.game.state, game.STATE_PLAYING)
@@ -118,7 +118,7 @@ class GamePlayTestCase(unittest.TestCase):
         self.assertEqual(event['name'], game.EVENT_NAME_GAMEOVER)
         self.assertEqual(
             event['last_move'],
-            { 'r': 3, 'c': 3, 'player': 'x' }
+            { 'r': 3, 'c': 3, 'token': 'x' }
         )
         self.assertEqual(
             event['details'],
@@ -153,13 +153,13 @@ class GamePlayTestCase(unittest.TestCase):
         self.assertEqual(event['reason'], game.EVENT_REASON_SQUASHED)
         self.assertEqual(
             event['last_move'],
-            { 'r': 3, 'c': 2, 'player': 'x' }
+            { 'r': 3, 'c': 2, 'token': 'x' }
         )
 
         self.assertEqual(self.game.state, game.STATE_GAMEOVER)
         self.assertEqual(str(self.game.board), 'xoxxoooxx')
-        self.assertEqual(self.game.turn, 'o')
-        self.assertEqual(self.game.next_turn(), 'x')
+        self.assertEqual(self.game.turn, 'x')
+        self.assertEqual(self.game.next_turn(), 'o')
         self.assertEqual(self.game.statistics['total'], 1)
         self.assertEqual(self.game.statistics['xwins'], 0)
         self.assertEqual(self.game.statistics['owins'], 0)
@@ -170,13 +170,14 @@ class RestartGameTestCase(unittest.TestCase):
     def setUp(self):
         self.game = Game()
         self.game.start('o')
+
+    def test_restart_after_a_win(self):
         self.game.moveto(1, 3)
         self.game.moveto(1, 1)
         self.game.moveto(2, 3)
         self.game.moveto(2, 1)
         self.game.moveto(3, 3)
 
-    def test_when_restart(self):
         self.game.restart()
 
         self.assertEqual(self.game.state, game.STATE_PLAYING)
@@ -187,3 +188,25 @@ class RestartGameTestCase(unittest.TestCase):
         self.assertEqual(self.game.statistics['xwins'], 0)
         self.assertEqual(self.game.statistics['owins'], 1)
         self.assertEqual(self.game.statistics['squashed'], 0)
+
+    def test_restart_after_a_squashed_game(self):
+        self.game.moveto(1, 1)
+        self.game.moveto(2, 2)
+        self.game.moveto(3, 3)
+        self.game.moveto(2, 3)
+        self.game.moveto(2, 1)
+        self.game.moveto(3, 1)
+        self.game.moveto(1, 3)
+        self.game.moveto(1, 2)
+        self.game.moveto(3, 2)
+
+        self.game.restart()
+
+        self.assertEqual(self.game.state, game.STATE_PLAYING)
+        self.assertEqual(str(self.game.board), '.........')
+        self.assertEqual(self.game.turn, 'x')
+        self.assertEqual(self.game.next_turn(), 'o')
+        self.assertEqual(self.game.statistics['total'], 1)
+        self.assertEqual(self.game.statistics['xwins'], 0)
+        self.assertEqual(self.game.statistics['owins'], 0)
+        self.assertEqual(self.game.statistics['squashed'], 1)
