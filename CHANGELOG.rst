@@ -1,8 +1,8 @@
 Change Log
 ----------
 
-`Unreleased`_
-+++++++++++++
+`1.0.0`_ (2016-09-09)
++++++++++++++++++++++
 
 **Added**
 
@@ -17,4 +17,5 @@ Change Log
 
 Birth!
 
-.. _`Unreleased`: https://github.com/dwayne/xo-python/compare/v0.0.1...HEAD
+.. _`Unreleased`: https://github.com/dwayne/xo-python/compare/v1.0.0...HEAD
+.. _`1.0.0`: https://github.com/dwayne/xo-python/compare/v0.0.1...v1.0.0
