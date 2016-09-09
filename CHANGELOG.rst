@@ -7,6 +7,10 @@ Change Log
 **Added**
 
 - A board data structure
+- An arbiter
+- A game engine
+- An AI based on the Minimax algorithm
+- A CLI
 
 0.0.1 (2016-09-05)
 ++++++++++++++++++
