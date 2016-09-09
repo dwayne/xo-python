@@ -52,8 +52,8 @@ class GameoverPositionsTestCase(unittest.TestCase):
         }])
 
     def test_when_game_is_squashed(self):
-        for player in ['x', 'o']:
-            outcome = arbiter.outcome(Board.fromstring('xoxxoooxx'), player)
+        for token in ['x', 'o']:
+            outcome = arbiter.outcome(Board.fromstring('xoxxoooxx'), token)
 
             self.assertEqual(outcome['status'], arbiter.STATUS_GAMEOVER)
             self.assertEqual(outcome['reason'], arbiter.REASON_SQUASHED)
@@ -61,8 +61,8 @@ class GameoverPositionsTestCase(unittest.TestCase):
 
 class InvalidPositionsTestCase(unittest.TestCase):
     def test_when_too_many_moves_ahead(self):
-        for player in ['x', 'o']:
-            outcome = arbiter.outcome(Board.fromstring('xx'), player)
+        for token in ['x', 'o']:
+            outcome = arbiter.outcome(Board.fromstring('xx'), token)
 
             self.assertEqual(outcome['status'], arbiter.STATUS_INVALID)
             self.assertEqual(
@@ -71,16 +71,16 @@ class InvalidPositionsTestCase(unittest.TestCase):
             )
 
     def test_when_two_winners(self):
-        for player in ['x', 'o']:
-            outcome = arbiter.outcome(Board.fromstring('xo xo xo'), player)
+        for token in ['x', 'o']:
+            outcome = arbiter.outcome(Board.fromstring('xo xo xo'), token)
 
             self.assertEqual(outcome['status'], arbiter.STATUS_INVALID)
             self.assertEqual(outcome['reason'], arbiter.REASON_TWO_WINNERS)
 
 
 class ArgumentErrorTestCase(unittest.TestCase):
-    def test_when_not_given_a_player(self):
-        with self.assertRaisesRegex(ValueError, 'expected a player:  '):
+    def test_when_not_given_a_token(self):
+        with self.assertRaisesRegex(ValueError, 'must be a token:  '):
             arbiter.outcome(Board.fromstring(), ' ')
 
 

@@ -3,27 +3,28 @@ import math
 from collections import namedtuple
 
 from . import arbiter
-from .board import isempty, isplayer, ncells, other_player
+from .board import ncells
+from .token import isempty, istoken, other_token
 
 
 MinimaxResult = namedtuple('MinimaxResult', 'score depth positions')
 
 
-def evaluate(board, player, use_cache=True):
-    outcome = arbiter.outcome(board, player)
+def evaluate(board, token, use_cache=True):
+    outcome = arbiter.outcome(board, token)
 
     if outcome['status'] == arbiter.STATUS_IN_PROGRESS:
-        other = other_player(player)
-        player_piece_count = outcome['piece_counts']['{}s'.format(player)]
+        other = other_token(token)
+        token_piece_count = outcome['piece_counts']['{}s'.format(token)]
         other_piece_count = outcome['piece_counts']['{}s'.format(other)]
 
-        if player_piece_count <= other_piece_count:
+        if token_piece_count <= other_piece_count:
             if use_cache and outcome['piece_counts']['es'] >= ncells - 1:
                 return _cached_minimax_result[str(board)]
             else:
-                return _maximize(board, player, other, 0)
+                return _maximize(board, token, other, 0)
         else:
-            raise ValueError("not {}'s turn to play: {}".format(player, board))
+            raise ValueError("not {}'s turn to play: {}".format(token, board))
     elif outcome['status'] == arbiter.STATUS_GAMEOVER:
         raise ValueError('no available moves: {}'.format(board))
     else:

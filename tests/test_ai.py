@@ -71,8 +71,8 @@ class EndGameTestCase(unittest.TestCase):
 
 
 class BadArgumentTestCase(unittest.TestCase):
-    def test_when_not_a_player(self):
-        with self.assertRaisesRegex(ValueError, 'expected a player: .'):
+    def test_when_not_a_token(self):
+        with self.assertRaisesRegex(ValueError, 'must be a token: .'):
             ai.evaluate(Board.fromstring(), '.')
 
     def test_when_no_moves_available(self):
@@ -89,6 +89,6 @@ class BadArgumentTestCase(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'invalid board: xxx......'):
             ai.evaluate(Board.fromstring('xxx'), 'o')
 
-    def test_when_not_player_turn(self):
+    def test_when_not_token_turn(self):
         with self.assertRaisesRegex(ValueError, "not x's turn to play: xxo......"):
             ai.evaluate(Board.fromstring('xxo'), 'x')

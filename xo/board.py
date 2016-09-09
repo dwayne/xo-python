@@ -1,23 +1,9 @@
+from .token import canonical_piece, istoken
+
+
 nrows = 3
 ncols = 3
 ncells = nrows * ncols
-
-
-def isplayer(piece):
-    return piece == 'x' or piece == 'o'
-
-
-def isempty(piece):
-    return not isplayer(piece)
-
-
-def other_player(player):
-    if player == 'x':
-        return 'o'
-    elif player == 'o':
-        return 'x'
-    else:
-        raise ValueError('expected a player: {}'.format(player))
 
 
 class Board:
@@ -29,7 +15,7 @@ class Board:
             if i >= ncells:
                 break
 
-            if isplayer(piece):
+            if istoken(piece):
                 cells[i] = piece
 
         return cls(cells)
@@ -42,7 +28,7 @@ class Board:
         return self.cells[self._idx(*pos)]
 
     def __setitem__(self, pos, piece):
-        self.cells[self._idx(*pos)] = self._normalize_to_piece(piece)
+        self.cells[self._idx(*pos)] = canonical_piece(piece)
 
     def __iter__(self):
         return self._each_piece()
@@ -59,17 +45,11 @@ class Board:
         ])
 
     def __str__(self):
-        return ''.join(piece if isplayer(piece) else '.' for piece in self.cells)
+        return ''.join(piece if istoken(piece) else '.' for piece in self.cells)
 
     @staticmethod
     def contains(r, c):
         return 1 <= r <= nrows and 1 <= c <= ncols
-
-    @staticmethod
-    def _normalize_to_piece(piece):
-        if isplayer(piece):
-            return piece
-        return ' '
 
     @classmethod
     def _idx(cls, r, c):

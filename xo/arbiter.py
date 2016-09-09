@@ -1,4 +1,4 @@
-from .board import isplayer, other_player
+from .token import istoken, other_token
 
 
 STATUS_INVALID     = 'invalid'
@@ -13,9 +13,9 @@ REASON_LOSER                = 'loser'
 REASON_SQUASHED             = 'squashed'
 
 
-def outcome(board, player):
-    if not isplayer(player):
-        raise ValueError('expected a player: {}'.format(player))
+def outcome(board, token):
+    if not istoken(token):
+        raise ValueError('must be a token: {}'.format(token))
 
     piece_counts = count_pieces(board)
 
@@ -32,17 +32,17 @@ def outcome(board, player):
                 'status': STATUS_INVALID,
                 'reason': REASON_TWO_WINNERS
             }
-        elif _is_winner(winners, player):
+        elif _is_winner(winners, token):
             result = {
                 'status': STATUS_GAMEOVER,
                 'reason': REASON_WINNER,
-                'details': winners[player]
+                'details': winners[token]
             }
-        elif _is_winner(winners, other_player(player)):
+        elif _is_winner(winners, other_token(token)):
             result = {
                 'status': STATUS_GAMEOVER,
                 'reason': REASON_LOSER,
-                'details': winners[other_player(player)]
+                'details': winners[other_token(token)]
             }
         elif _is_squashed(piece_counts):
             result = {
@@ -108,15 +108,15 @@ def _find_winners(board):
 
 
 def _is_winning(x, y, z):
-    return isplayer(x) and x == y and y == z
+    return istoken(x) and x == y and y == z
 
 
 def _has_two_winners(winners):
     return len(winners['x']) > 0 and len(winners['o']) > 0
 
 
-def _is_winner(winners, player):
-    return len(winners[player]) > 0
+def _is_winner(winners, token):
+    return len(winners[token]) > 0
 
 
 def _is_squashed(piece_counts):
