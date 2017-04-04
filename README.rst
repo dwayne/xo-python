@@ -17,7 +17,8 @@ The library is written in a modular way. Its overall design consists of 4 decoup
 
 .. code-block:: python
 
-    >>> from xo.board import isempty, Board
+    >>> from xo.board import Board
+    >>> from xo.token import isempty
 
     >>> board = Board.fromstring('..x.o')
     >>> print(board)
