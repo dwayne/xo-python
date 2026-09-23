@@ -47,7 +47,7 @@ xo = "xo.cli:main"
 
 [project.urls]
 Homepage = "https://github.com/dwayne/xo-python"
-Changelog = "https://github.com/dwayne/xo-python/blob/master/CHANGELOG.rst"
+Changelog = "https://github.com/dwayne/xo-python/blob/master/CHANGELOG.md"
 
 [build-system]
 requires = ["uv_build>=0.12.17,<0.13"]
@@ -58,4 +58,4 @@ required-version = ">=0.12.17,<0.13"
 
 [tool.uv.build-backend]
 module-root = ""
-source-include = ["CHANGELOG.rst"]
+source-include = ["CHANGELOG.md"]
