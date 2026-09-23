@@ -2,7 +2,7 @@
 
 [![PyPI version](https://img.shields.io/pypi/v/xo.svg "Latest release on PyPI")](https://pypi.org/project/xo/)
 
-A [Python](https://www.python.org/) CLI game and library for [Tic-tac-toe](http://en.wikipedia.org/wiki/Tic-tac-toe).
+A [Tic-tac-toe](http://en.wikipedia.org/wiki/Tic-tac-toe) CLI game and library written in [Python](https://www.python.org/).
 
 The library is written in a modular way. Its overall design consists of 4 decoupled components:
 
@@ -159,121 +159,110 @@ Finally, `xo.cli` brings it all together in its implementation of the command-li
 
 ## Installation
 
-Install it using:
+Install it using pip, or your favourite Python package manager:
 
 ```bash
-$ pip install xo
+pip install xo
 ```
 
 You would now have access to an executable called `xo`. Type
 
 ```bash
-$ xo
+xo
 ```
 
-to starting playing immediately.
+to start playing immediately.
 
 ## Usage
 
 For help, type
 
 ```bash
-$ xo -h
+xo -h
 ```
 
 By default `xo` is configured for a human player to play with `x` and a computer player to play with `o`. However, this can be easily changed to allow any of the other 3 possibilities:
 
 ```bash
-$ # Computer vs Human
-$ xo -x computer -o human
+# Computer vs Human
+xo -x computer -o human
 
-$ # Human vs Human
-$ xo -x human -o human
-$ xo -o human # since x defaults to human
+# Human vs Human
+xo -x human -o human
+xo -o human # since x defaults to human
 
-$ # Computer vs Computer
-$ xo -x computer -o computer
-$ xo -x computer # since o defaults to computer
+# Computer vs Computer
+xo -x computer -o computer
+xo -x computer # since o defaults to computer
 ```
 
 You can also change who plays first. By default it's the `x` player.
 
 ```bash
-$ # Let o play first
-$ xo -f o
+# Let o play first
+xo -f o
 ```
 
 Finally, when letting the computers battle it out you can specify the number of times you want them to play each other. By default they play 50 rounds.
 
 ```bash
-$ xo -x computer -r 5
-.....
-
-Game statistics
----------------
-Total games played: 5 (2.438 secs)
-Number of times x won: 0
-Number of times o won: 0
-Number of squashed games: 5
+xo -x computer -r 5
+# .....
+#
+# Game statistics
+# ---------------
+# Total games played: 5 (2.438 secs)
+# Number of times x won: 0
+# Number of times o won: 0
+# Number of squashed games: 5
 ```
 
 ## Development
 
-Get the source code.
+You'll need [Nix](https://zero-to-nix.com/start/install/) with flakes enabled.
 
 ```bash
-$ git clone git@github.com:dwayne/xo-python.git
+git clone git@github.com:dwayne/xo-python.git
+cd xo-python
+nix develop
 ```
 
-Create a [virtual environment](https://docs.python.org/3/library/venv.html) and activate it.
+You're now all set to begin development. Some common tasks are available through `make`:
 
-```bash
-$ cd xo-python
-$ pyvenv venv
-$ . venv/bin/activate
-```
-
-Then, upgrade `pip` and `setuptools` and install the development dependencies.
-
-```bash
-(venv) $ pip install -U pip setuptools
-(venv) $ pip install -r requirements-dev.txt
-```
-
-You're now all set to begin development.
+| Command      | What it does                                                      |
+| -------------| ----------------------------------------------------------------- |
+| `make build` | Build the sdist and wheel into `dist/`                            |
+| `make check` | Build the package, run the tests and doctests, and check metadata |
+| `make clean` | Remove `dist/`                                                    |
 
 ## Testing
 
 Tests are written using the [unittest](https://docs.python.org/3/library/unittest.html) unit testing framework.
 
-Run all tests.
+Run everything with `make check`, or run tests directly:
 
 ```bash
-(venv) $ python -m unittest
+python -m unittest
 ```
 
 Run a specific test module.
 
 ```bash
-(venv) $ python -m unittest tests.test_arbiter
+python -m unittest tests.test_arbiter
 ```
 
 Run a specific test case.
 
 ```bash
-(venv) $ python -m unittest tests.test_arbiter.GameoverPositionsTestCase
+python -m unittest tests.test_arbiter.GameoverPositionsTestCase
 ```
 
 Run a specific test method.
 
 ```bash
-(venv) $ python -m unittest tests.test_arbiter.GameoverPositionsTestCase.test_when_x_wins
+python -m unittest tests.test_arbiter.GameoverPositionsTestCase.test_when_x_wins
 ```
 
 ## Credits
 
 Thanks to [Patrick Henry Winston](http://people.csail.mit.edu/phw/) for clarifying the Minimax algorithm. His [video](https://www.youtube.com/watch?v=STjW3eH0Cik) on the topic was a joy to watch.
-
-## Copyright
-
-Copyright (c) 2016 Dwayne Crooks. See [LICENSE](/LICENSE.txt) for further details.
