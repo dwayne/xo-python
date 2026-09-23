@@ -164,7 +164,7 @@ class Orchestrator:
 
         while True:
             s = self._console.getln()
-            s = re.split('\s+', s.strip())
+            s = re.split(r'\s+', s.strip())
             if len(s) == 2:
                 try:
                     return [int(t) for t in s]

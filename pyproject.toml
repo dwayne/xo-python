@@ -1,0 +1,61 @@
+[project]
+name = "xo"
+version = "1.0.0"
+description = "A Tic-tac-toe CLI game and library"
+readme = "README.md"
+requires-python = ">=3.11"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "Dwayne Crooks", email = "maintainer@dwaynecrooks.com" }]
+keywords = [
+    "tic-tac-toe",
+    "tictactoe",
+    "noughts-and-crosses",
+    "game",
+    "board-game",
+    "cli",
+    "terminal",
+    "minimax",
+    "ai",
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Education",
+    "Intended Audience :: End Users/Desktop",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Topic :: Games/Entertainment :: Board Games",
+]
+
+[dependency-groups]
+dev = [
+    "twine>=7.0.0",
+    "validate-pyproject[all]>=0.26",
+]
+
+[project.scripts]
+xo = "xo.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/dwayne/xo-python"
+Changelog = "https://github.com/dwayne/xo-python/blob/master/CHANGELOG.rst"
+
+[build-system]
+requires = ["uv_build>=0.12.17,<0.13"]
+build-backend = "uv_build"
+
+[tool.uv]
+required-version = ">=0.12.17,<0.13"
+
+[tool.uv.build-backend]
+module-root = ""
+source-include = ["CHANGELOG.rst"]
