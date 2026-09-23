@@ -14,13 +14,14 @@ The library is written in a modular way. Its overall design consists of 4 decoup
 **The board**
 
 ```python
->>> from xo.board import isempty, Board
+>>> from xo.board import Board
+>>> from xo.token import isempty
 
 >>> board = Board.fromstring('..x.o')
 >>> print(board)
 ..x.o....
 
->>> print(board.toascii())
+>>> print(board.toascii()) # doctest: +NORMALIZE_WHITESPACE
    |   | x
 ---+---+---
    | o |
@@ -28,7 +29,8 @@ The library is written in a modular way. Its overall design consists of 4 decoup
    |   |
 
 >>> board[1, 3]
-x
+'x'
+
 >>> board[3, 3] = 'x'
 >>> print(board)
 ..x.o...x
@@ -64,27 +66,13 @@ The arbiter is concerned about that though and can detect such invalid board lay
 >>> from xo.board import Board
 
 >>> arbiter.outcome(Board.fromstring(), 'x')
-{
-  'piece_counts': {'os': 0, 'xs': 0, 'es': 9},
-  'status': 'in-progress'
-}
+{'status': 'in-progress', 'piece_counts': {'xs': 0, 'os': 0, 'es': 9}}
 
 >>> arbiter.outcome(Board.fromstring('xxxoo'), 'o')
-{
-  'piece_counts': {'os': 2, 'xs': 3, 'es': 4},
-  'details': [
-    {'index': 1, 'positions': [(1, 1), (1, 2), (1, 3)], 'where': 'row'}
-  ],
-  'status': 'gameover',
-  'reason': 'loser'
-}
+{'status': 'gameover', 'reason': 'loser', 'details': [{'where': 'row', 'index': 1, 'positions': [(1, 1), (1, 2), (1, 3)]}], 'piece_counts': {'xs': 3, 'os': 2, 'es': 4}}
 
 >>> arbiter.outcome(Board.fromstring('xxxxxxxxo'), 'x')
-{
-  'piece_counts': {'os': 1, 'xs': 8, 'es': 0},
-  'status': 'invalid',
-  'reason': 'too-many-moves-ahead'
-}
+{'status': 'invalid', 'reason': 'too-many-moves-ahead', 'piece_counts': {'xs': 8, 'os': 1, 'es': 0}}
 
 ```
 
@@ -98,31 +86,21 @@ Enforcer of the game rules.
 >>> game = Game()
 >>> game.start('x')
 >>> game.moveto(1, 1)
-{
-  'name': 'next-turn',
-  'last_move': {'token': 'x', 'r': 1, 'c': 1}
-}
+{'name': 'next-turn', 'last_move': {'r': 1, 'c': 1, 'token': 'x'}}
+
 >>> game.moveto(1, 1)
-{
-  'name': 'invalid-move',
-  'reason': 'occupied'
-}
+{'name': 'invalid-move', 'reason': 'occupied'}
+
 >>> game.moveto(0, 0)
-{
-  'name': 'invalid-move',
-  'reason': 'out-of-bounds'
-}
+{'name': 'invalid-move', 'reason': 'out-of-bounds'}
+
 >>> game.moveto(2, 2)
-{
-  'name': 'next-turn',
-  'last_move': {'token': 'o', 'r': 2, 'c': 2}
-}
+{'name': 'next-turn', 'last_move': {'r': 2, 'c': 2, 'token': 'o'}}
+
 >>> game.moveto(3, 1)
-{
-  'name': 'next-turn',
-  'last_move': {'token': 'x', 'r': 3, 'c': 1}
-}
->>> print(game.board.toascii())
+{'name': 'next-turn', 'last_move': {'r': 3, 'c': 1, 'token': 'x'}}
+
+>>> print(game.board.toascii()) # doctest: +NORMALIZE_WHITESPACE
  x |   |
 ---+---+---
    | o |
@@ -130,19 +108,13 @@ Enforcer of the game rules.
  x |   |
 
 >>> game.moveto(3, 3)
-{
-  'name': 'next-turn',
-  'last_move': {'token': 'o', 'r': 3, 'c': 3}
-}
+{'name': 'next-turn', 'last_move': {'r': 3, 'c': 3, 'token': 'o'}}
+
 >>> game.moveto(2, 1)
-{
-  'name': 'gameover',
-  'reason': 'winner',
-  'last_move': {'token': 'x', 'r': 2, 'c': 1},
-  'details': [{'index': 1, 'positions': [(1, 1), (2, 1), (3, 1)], 'where': 'column'}]
-}
+{'name': 'gameover', 'reason': 'winner', 'last_move': {'r': 2, 'c': 1, 'token': 'x'}, 'details': [{'where': 'column', 'index': 1, 'positions': [(1, 1), (2, 1), (3, 1)]}]}
 
 >>> game.moveto(1, 3)
+Traceback (most recent call last):
 ...
 xo.error.IllegalStateError: gameover
 
@@ -151,7 +123,9 @@ xo.error.IllegalStateError: gameover
 >>> # since x won, it would be x's turn to play
 >>> # if the game was squashed then it would have been o's turn to play
 >>> game.moveto(1, 1)
->>> print(game.board.toascii())
+{'name': 'next-turn', 'last_move': {'r': 1, 'c': 1, 'token': 'x'}}
+
+>>> print(game.board.toascii()) # doctest: +NORMALIZE_WHITESPACE
  x |   |
 ---+---+---
    |   |
