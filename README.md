@@ -1,6 +1,7 @@
 # xo
 
-[![PyPI version](https://img.shields.io/pypi/v/xo.svg "Latest release on PyPI")](https://pypi.org/project/xo/)
+[![Latest PyPI version](https://img.shields.io/pypi/v/xo.svg "Latest PyPI version")](https://pypi.org/project/xo/)
+[![Supported Python versions](https://img.shields.io/pypi/pyversions/xo.svg "Supported Python versions")](https://pypi.org/project/xo/)
 
 A [Tic-tac-toe](http://en.wikipedia.org/wiki/Tic-tac-toe) CLI game and library written in [Python](https://www.python.org/).
 
