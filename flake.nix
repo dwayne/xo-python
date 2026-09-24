@@ -8,7 +8,18 @@
     flake-utils.lib.eachDefaultSystem(system:
       let
         pkgs = nixpkgs.legacyPackages.${system};
-        test-all-previous = pkgs.callPackage ./nix/test-all-previous.nix {};
+
+        mkTest = python: pkgs.callPackage ./nix/test-with-python.nix { inherit python; };
+
+        test-with-py311 = mkTest pkgs.python311;
+        test-with-py312 = mkTest pkgs.python312;
+        test-with-py313 = mkTest pkgs.python313;
+        test-with-py314 = mkTest pkgs.python314;
+
+        test-all-previous = pkgs.callPackage ./nix/test-all-previous.nix {
+          tests = [ test-with-py311 test-with-py312 test-with-py313 ];
+        };
+
         xo = pkgs.python314Packages.callPackage ./nix/xo.nix {};
       in
       {
@@ -35,7 +46,7 @@
 
         packages = {
           default = xo;
-          inherit test-all-previous xo;
+          inherit test-all-previous test-with-py311 test-with-py312 test-with-py313 test-with-py314 xo;
         };
 
         checks = {
