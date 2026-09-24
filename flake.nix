@@ -8,7 +8,8 @@
     flake-utils.lib.eachDefaultSystem(system:
       let
         pkgs = nixpkgs.legacyPackages.${system};
-        xo = pkgs.python314Packages.callPackage ./nix/xo.nix { };
+        test-all-previous = pkgs.callPackage ./nix/test-all-previous.nix {};
+        xo = pkgs.python314Packages.callPackage ./nix/xo.nix {};
       in
       {
         devShells.default = pkgs.mkShell {
@@ -32,28 +33,9 @@
           '';
         };
 
-        packages = let
-          test-all-previous = pkgs.writeShellApplication {
-            name = "test-all-previous";
-            runtimeInputs = with pkgs; [
-              python311
-              python312
-              python313
-              uv
-            ];
-            text = ''
-              export UV_PYTHON_DOWNLOADS="never"
-
-              for v in 3.11 3.12 3.13; do
-                echo "=== Python $v"
-                uv run --isolated --python "$v" python -m unittest
-              done
-            '';
-          };
-        in
-        {
+        packages = {
           default = xo;
-          inherit xo test-all-previous;
+          inherit test-all-previous xo;
         };
 
         checks = {
