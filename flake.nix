@@ -8,6 +8,7 @@
     flake-utils.lib.eachDefaultSystem(system:
       let
         pkgs = nixpkgs.legacyPackages.${system};
+        xo = pkgs.python314Packages.callPackage ./nix/xo.nix { };
       in
       {
         devShells.default = pkgs.mkShell {
@@ -50,7 +51,14 @@
             '';
           };
         in
-        { inherit test-all-previous; };
+        {
+          default = xo;
+          inherit xo test-all-previous;
+        };
+
+        checks = {
+          inherit xo;
+        };
       }
     );
 }

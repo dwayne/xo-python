@@ -1,3 +1,7 @@
+# Python
 .venv/
 __pycache__/
 dist/
+
+# Nix
+result

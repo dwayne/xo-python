@@ -218,9 +218,32 @@ xo -x computer -r 5
 # Number of squashed games: 5
 ```
 
+### With Nix
+
+If you have [Nix](https://zero-to-nix.com/start/install/) with flakes enabled, you can play without installing anything:
+
+```bash
+nix run github:dwayne/xo-python
+```
+
+Options go after `--`:
+
+```bash
+nix run github:dwayne/xo-python -- -x computer -o computer -r 5
+```
+
+To keep `xo` on your `PATH`:
+
+```bash
+nix profile add github:dwayne/xo-python
+```
+
+From a clone of the repository, `nix run` runs your local copy.
+
+
 ## Development
 
-You'll need [Nix](https://zero-to-nix.com/start/install/) with flakes enabled.
+Development also uses Nix (see [With Nix](#with-nix)). Clone the repository and enter the development shell:
 
 ```bash
 git clone git@github.com:dwayne/xo-python.git
