@@ -1,6 +1,6 @@
 [project]
 name = "xo"
-version = "1.0.0"
+version = "1.1.0"
 description = "A Tic-tac-toe CLI game and library"
 readme = "README.md"
 requires-python = ">=3.11"
