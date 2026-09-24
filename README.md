@@ -230,11 +230,12 @@ nix develop
 
 You're now all set to begin development. Some common tasks are available through `make`:
 
-| Command      | What it does                                                      |
-| -------------| ----------------------------------------------------------------- |
-| `make build` | Build the sdist and wheel into `dist/`                            |
-| `make check` | Build the package, run the tests and doctests, and check metadata |
-| `make clean` | Remove `dist/`                                                    |
+| Command          | What it does                                                            |
+| ---------------- | ----------------------------------------------------------------------- |
+| `make build`     | Build the sdist and wheel into `dist/`                                  |
+| `make check`     | Build the package, run the tests and doctests, and check metadata       |
+| `make check-all` | Run `make check`, then the tests on the other supported Python versions |
+| `make clean`     | Remove build artifacts                                                  |
 
 ## Testing
 
