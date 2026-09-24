@@ -27,6 +27,7 @@
           name = "xo-python-dev";
 
           packages = [
+            pkgs.actionlint
             pkgs.python314
             pkgs.uv
           ];

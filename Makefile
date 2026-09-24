@@ -10,6 +10,7 @@ check: build
 	uv run validate-pyproject pyproject.toml
 	uv run twine check dist/*
 	nix flake check -L
+	actionlint
 
 check-all: check
 	nix run .#test-all-previous
